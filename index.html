@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wong Jien Liang | Business Analytics & Practical AI</title>
+    
+    <!-- Open Graph / Twitter Card Meta Tags -->
+    <meta property="og:title" content="Wong Jien Liang | Business Analytics & Practical AI">
+    <meta property="og:description" content="Bridging finance, business analytics, and practical AI development to build tools that solve real organizational inefficiencies.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <!-- Add og:image later: 1200x630 PNG matching dark theme -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Wong Jien Liang | Business Analytics & Practical AI">
+    <meta name="twitter:description" content="Bridging finance, business analytics, and practical AI development to build tools that solve real organizational inefficiencies.">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Theme Initialization script to avoid Flash -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.documentElement.classList.add('light');
+            } else {
+                document.documentElement.classList.remove('light');
+            }
+        })();
+    </script>
+
+    <style>
+        :root {
+            --bg: #020a18;
+            --bg-grad: linear-gradient(170deg, #020a18 0%, #041028 40%, #06142e 70%, #020a18 100%);
+            --surface: rgba(8, 24, 56, 0.85);
+            --border: rgba(0, 170, 255, 0.12);
+            --border-glow: rgba(0, 170, 255, 0.3);
+            --text: #d0e0f0;
+            --text-bright: #e8f0ff;
+            --text-dim: #6888aa;
+            
+            /* Accents */
+            --neon: #00aaff;
+            --cyan: #00e5ff;
+            --green: #00ff88;
+            --amber: #ffaa00;
+            --red: #ff4466;
+            --purple: #aa66ff;
+            
+            --grid-color: rgba(0, 170, 255, 0.03);
+            --header-bg: rgba(2, 10, 24, 0.7);
+        }
+
+        html.light {
+            --bg: #f4f7fa;
+            --bg-grad: linear-gradient(170deg, #eef2f7 0%, #f4f7fa 40%, #ffffff 70%, #eef2f7 100%);
+            --surface: rgba(255, 255, 255, 0.9);
+            --border: rgba(0, 110, 255, 0.15);
+            --border-glow: rgba(0, 110, 255, 0.25);
+            --text: #2c3e50;
+            --text-bright: #0f172a;
+            --text-dim: #5a738e;
+            
+            /* Remapped Accents for high contrast in light mode */
+            --neon: #0066cc;
+            --cyan: #008b8b;
+            --green: #008744;
+            --amber: #b25900;
+            --red: #cc1111;
+            --purple: #6600cc;
+            
+            --grid-color: rgba(0, 110, 255, 0.04);
+            --header-bg: rgba(244, 247, 250, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg);
+            background-image: var(--bg-grad);
+            background-attachment: fixed;
+            color: var(--text);
+            font-size: 16px;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Depth Layer */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: 60px 60px;
+            background-image: 
+                linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .ambient-orb {
+            position: fixed;
+            width: 45vw;
+            height: 45vw;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: none;
+            animation: orb-bounce 25s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            background: var(--neon);
+            top: -10%;
+            left: -15%;
+        }
+
+        .orb-2 {
+            background: var(--purple);
+            bottom: -10%;
+            right: -15%;
+            animation-duration: 35s;
+            animation-delay: -5s;
+        }
+
+        @keyframes orb-bounce {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(8%, 10%) scale(1.1); }
+            100% { transform: translate(-5%, -5%) scale(0.9); }
+        }
+
+        /* Content Layer Setup */
+        .content-layer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Sticky Glass Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: var(--header-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 0;
+            transition: border-color 0.3s;
+        }
+
+        .header-container {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--text-bright);
+            letter-spacing: -0.5px;
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-bright);
+            border-radius: 8px;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            border-color: var(--neon);
+            box-shadow: 0 0 10px var(--border-glow);
+            transform: translateY(-1px);
+        }
+
+        /* Container styling */
+        .main-container {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 40px 20px 80px 20px;
+        }
+
+        /* Hero styling */
+        .hero {
+            padding: 40px 0 60px 0;
+        }
+
+        .hero-name {
+            font-size: clamp(2.5rem, 6vw, 3.8rem);
+            font-weight: 800;
+            color: var(--text-bright);
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin-bottom: 10px;
+        }
+
+        .hero-role {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            font-weight: 600;
+            color: var(--neon);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+        }
+
+        .hero-statement {
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-weight: 400;
+            line-height: 1.45;
+            color: var(--text-bright);
+            margin-bottom: 35px;
+            max-width: 780px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--neon);
+            color: var(--text-bright);
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary:hover {
+            background: var(--neon);
+            color: #020a18;
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Collapsible Sections */
+        .collapsible-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.3s;
+        }
+
+        .collapsible-section:hover {
+            border-color: var(--border-glow);
+        }
+
+        .section-trigger {
+            width: 100%;
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px;
+            text-align: left;
+            cursor: pointer;
+            color: var(--text-bright);
+        }
+
+        .section-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .section-num {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--neon);
+            color: var(--neon);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            background: rgba(0, 170, 255, 0.05);
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .toggle-icon {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: var(--text-dim);
+            transition: transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+
+        .section-content {
+            max-height: 2000px; /* Large enough default for smooth slide */
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section-content-inner {
+            padding: 0 24px 28px 76px; /* Align content past the circle number */
+        }
+
+        @media (max-width: 600px) {
+            .section-content-inner {
+                padding: 0 20px 24px 20px;
+            }
+            .section-trigger {
+                padding: 20px;
+            }
+        }
+
+        /* Section contents styles */
+        .section-content p {
+            margin-bottom: 20px;
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .work-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .work-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .work-card h4 {
+            color: var(--text-bright);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            background: rgba(0, 170, 255, 0.06);
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        ul.signature-bullets {
+            list-style: none;
+        }
+
+        ul.signature-bullets li {
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        ul.signature-bullets li::before {
+            content: "⚡";
+            position: absolute;
+            left: 0;
+            top: 1px;
+            color: var(--neon);
+        }
+
+        .accent-text {
+            color: var(--neon);
+            font-weight: 600;
+        }
+
+        /* Link behavior */
+        a.inline-link {
+            color: var(--neon);
+            text-decoration: none;
+            transition: color 0.2s, text-shadow 0.2s;
+        }
+
+        a.inline-link:hover {
+            color: var(--cyan);
+            text-shadow: 0 0 8px var(--border-glow);
+        }
+
+        /* Contact Details */
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+
+        .contact-card:hover {
+            border-color: var(--neon);
+        }
+
+        /* Footer styling */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 0;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .footer-logo {
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+        }
+
+        /* SVGs for Theme Toggle */
+        .theme-icon {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .sun-icon { display: block; }
+        .moon-icon { display: none; }
+
+        html.light .sun-icon { display: none; }
+        html.light .moon-icon { display: block; }
+
+        /* Animation utilities */
+        .rotated {
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-overlay"></div>
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <div class="content-layer">
+        
+        <!-- Frosted Sticky Header -->
+        <header>
+            <div class="header-container">
+                <a href="#" class="header-logo">Wong Jien Liang</a>
+                <div class="header-actions">
+                    <button class="icon-btn" id="collapse-toggle" title="Collapse / Expand All Sections">
+                        <svg class="theme-icon" viewBox="0 0 24 24">
+                            <line x1="4" y1="6" x2="20" y2="6"></line>
+                            <line x1="4" y1="12" x2="20" y2="12"></line>
+                            <line x1="4" y1="18" x2="20" y2="18"></line>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" id="theme-toggle" title="Toggle Color Theme">
+                        <!-- Sun Icon -->
+                        <svg class="theme-icon sun-icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <!-- Moon Icon -->
+                        <svg class="theme-icon moon-icon" viewBox="0 0 24 24">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-container">
+            
+            <!-- Hero Area -->
+            <section class="hero">
+                <h1 class="hero-name">Wong Jien Liang</h1>
+                <div class="hero-role">Business Analytics &amp; Practical AI</div>
+                <p class="hero-statement">
+                    Building the bridge between data-driven business analytics and practical AI tools that turn operational complexity into clean, automated workflows.
+                </p>
+                <a href="#contact" class="btn-primary" onclick="openSection(document.getElementById('section-4'))">Initiate Collaboration</a>
+            </section>
+
+            <!-- Collapsible Sections -->
+            
+            <!-- Section 1 -->
+            <div class="collapsible-section" id="section-1">
+                <button class="section-trigger" aria-expanded="true">
+                    <div class="section-header-left">
+                        <div class="section-num">01</div>
+                        <div class="section-title">Signature AI Project: 'Forget'</div>
+                    </div>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="section-content">
+                    <div class="section-content-inner">
+                        <p>
+                            Many projects emerge from personal necessity. <span class="accent-text">'Forget'</span> is a utility app engineered to eliminate manual shift and routine scheduling friction.
+                        </p>
+                        <div class="work-card">
+                            <h4>Forget — Intelligent Roster-to-Calendar Automation</h4>
+                            <p>
+                                An intuitive, AI-powered application that seamlessly parses raw, unstructured textual notes and photographic roster uploads directly into structured digital calendar events.
+                            </p>
+                            <ul class="signature-bullets">
+                                <li><strong>Highly efficient:</strong> Specifically built to automatically map complex, varied schedule grids with zero manual entry required from the user.</li>
+                                <li><strong>Proven impact:</strong> Substantially lowered personal weekly scheduling and organization workflow time.</li>
+                            </ul>
+                            <div class="tag-list">
+                                <span class="tag">AI Parser</span>
+                                <span class="tag">Workflow Automation</span>
+                                <span class="tag">Next-gen UX</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="collapsible-section" id="section-2">
+                <button class="section-trigger" aria-expanded="true">
+                    <div class="section-header-left">
+                        <div class="section-num">02</div>
+                        <div class="section-title">Investment Research &amp; Analytics</div>
+                    </div>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="section-content">
+                    <div class="section-content-inner">
+                        <p>
+                            Combining a comprehensive academic background in <span class="accent-text">Finance &amp; Investment</span> with practical execution in advanced analytics.
+                        </p>
+                        <div class="work-grid">
+                            <div class="work-card">
+                                <h4>Data &amp; Due Diligence Integration <span style="font-weight:normal; font-size: 0.85rem; color: var(--text-dim);">[inferred]</span></h4>
+                                <p>
+                                    Translating complex financial datasets, corporate files, and investment disclosures into simplified, actionable strategic insight narratives.
+                                </p>
+                            </div>
+                            <div class="work-card">
+                                <h4>Advanced Modeling &amp; Intelligence <span style="font-weight:normal; font-size: 0.85rem; color: var(--text-dim);">[inferred]</span></h4>
+                                <p>
+                                    Utilizing current MSc Business Analytics techniques to develop model architectures, investigate market anomalies, and evaluate operational resilience.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="collapsible-section" id="section-3">
+                <button class="section-trigger" aria-expanded="true">
+                    <div class="section-header-left">
+                        <div class="section-num">03</div>
+                        <div class="section-title">Decision Analysis &amp; Case Studies</div>
+                    </div>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="section-content">
+                    <div class="section-content-inner">
+                        <p>
+                            Optimal execution is built on identifying systemic failure points. I conduct deep analytical case studies targeting cognitive gaps in corporate decision environments <span class="accent-text">[inferred]</span>.
+                        </p>
+                        <div class="work-card">
+                            <h4>Corporate Judgment Failure Research <span style="font-weight:normal; font-size: 0.85rem; color: var(--text-dim);">[inferred]</span></h4>
+                            <p>
+                                Investigating key historical cases of systemic corporate failure—such as Eastman Kodak—to model and identify where decision-making biases (such as the status quo bias and escalation of commitment) override analytics.
+                            </p>
+                            <div class="tag-list">
+                                <span class="tag">Decision Architecture</span>
+                                <span class="tag">Cognitive Bias Modeling</span>
+                                <span class="tag">Strategic Risk Mitigation</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4 -->
+            <div class="collapsible-section" id="section-4">
+                <button class="section-trigger" aria-expanded="true">
+                    <div class="section-header-left">
+                        <div class="section-num">04</div>
+                        <div class="section-title">Connect &amp; Collaborate</div>
+                    </div>
+                    <span class="toggle-icon">+</span>
+                </button>
+                <div class="section-content">
+                    <div class="section-content-inner" id="contact">
+                        <p>
+                            I am looking to connect with researchers, forward-thinking operators, and prospective partners who want to build tailored tools or integrate analytics pipelines.
+                        </p>
+                        <div class="contact-methods">
+                            <div class="contact-card">
+                                <div style="font-size: 1.5rem; margin-bottom: 8px;">📩</div>
+                                <h5 style="color: var(--text-bright); margin-bottom: 4px;">Direct Contact</h5>
+                                <a href="mailto:wong_jienliang1@ge.rakyatdigital.gov.my" class="inline-link">Send Email</a>
+                            </div>
+                            <div class="contact-card">
+                                <div style="font-size: 1.5rem; margin-bottom: 8px;">🛠️</div>
+                                <h5 style="color: var(--text-bright); margin-bottom: 4px;">Custom Solutions</h5>
+                                <span style="font-size: 0.85rem; color: var(--text-dim);">Let's scope automated utilities</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-logo">Wong Jien Liang</div>
+            <p>&copy; 2026 &bull; Built with the AI Badge</p>
+        </footer>
+
+    </div>
+
+    <!-- Scripting for Interactivity -->
+    <script>
+        // Collapsible logic
+        const sections = document.querySelectorAll('.collapsible-section');
+        const triggers = document.querySelectorAll('.section-trigger');
+        const globalToggle = document.getElementById('collapse-toggle');
+
+        // Toggle individual sections
+        triggers.forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const parent = trigger.parentElement;
+                toggleSection(parent);
+            });
+        });
+
+        function toggleSection(section) {
+            const content = section.querySelector('.section-content');
+            const trigger = section.querySelector('.section-trigger');
+            const icon = trigger.querySelector('.toggle-icon');
+            const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+
+            if (isExpanded) {
+                // Collapse
+                content.style.maxHeight = '0px';
+                trigger.setAttribute('aria-expanded', 'false');
+                icon.classList.add('rotated');
+            } else {
+                // Expand
+                content.style.maxHeight = content.scrollHeight + 100 + 'px';
+                trigger.setAttribute('aria-expanded', 'true');
+                icon.classList.remove('rotated');
+            }
+        }
+
+        function openSection(section) {
+            const content = section.querySelector('.section-content');
+            const trigger = section.querySelector('.section-trigger');
+            const icon = trigger.querySelector('.toggle-icon');
+            
+            content.style.maxHeight = content.scrollHeight + 100 + 'px';
+            trigger.setAttribute('aria-expanded', 'true');
+            icon.classList.remove('rotated');
+        }
+
+        // Global Collapse / Expand All
+        let allExpanded = true;
+        globalToggle.addEventListener('click', () => {
+            allExpanded = !allExpanded;
+            sections.forEach(section => {
+                const content = section.querySelector('.section-content');
+                const trigger = section.querySelector('.section-trigger');
+                const icon = trigger.querySelector('.toggle-icon');
+
+                if (allExpanded) {
+                    content.style.maxHeight = content.scrollHeight + 100 + 'px';
+                    trigger.setAttribute('aria-expanded', 'true');
+                    icon.classList.remove('rotated');
+                } else {
+                    content.style.maxHeight = '0px';
+                    trigger.setAttribute('aria-expanded', 'false');
+                    icon.classList.add('rotated');
+                }
+            });
+        });
+
+        // Theme Toggle Logic
+        const themeBtn = document.getElementById('theme-toggle');
+        themeBtn.addEventListener('click', () => {
+            const isLight = document.documentElement.classList.toggle('light');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+    </script>
+</body>
+</html>
